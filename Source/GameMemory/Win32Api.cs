@@ -6,25 +6,14 @@ using System.Runtime.InteropServices;
 
 namespace GameEngine
 {
+    public interface IMemoryManager
+    {
+        bool ReadProcessMemory(int lpBaseAddress, byte[] lpBuffer, int size);
+        bool WriteProcessMemory(int lpBaseAddress, byte[] lpBuffer, int size);  
+    }
+
     internal class Win32Api
     {
-        public struct MEMORY_BASIC_INFORMATION
-        {
-            public int BaseAddress;
-            public int AllocationBase;
-            public int AllocationProtect;
-            public int RegionSize;
-            public int State;
-            public int Protect;
-            public int lType;
-        }
-
-        public const int MEM_COMMIT = 0x1000;
-        public const int PAGE_READWRITE = 0x04;
-
-        [DllImport("kernel32.dll")]     //查询内存块信息  
-        public static extern int VirtualQueryEx(
-            IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, int dwLength);
         [DllImport("kernel32.dll")]
         public static extern bool ReadProcessMemory(
             IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int size, out int numBytesRead);

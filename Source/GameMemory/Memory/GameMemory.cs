@@ -5,41 +5,35 @@ using System.Text;
 
 namespace GameEngine.Memory
 {
-    public abstract class GameMemory<TDisplayValue>
+    public abstract class GameMemory
     {
-        public GameMemory(string description, int memoryAddress)
+        public GameMemory(string description, int memoryAddress, Type displayValue)
         {
             this.Description = description;
             this.MemoryAddress = memoryAddress;
-            this.DisplayValue = default(TDisplayValue);
+            this.DisplayType = DisplayType;
         }
 
         public string Description { get; set; }
         
         public int MemoryAddress { get; protected set; }
 
-        public ushort Value { get; set; }
+        public Type DisplayType { get; protected set; }
 
-        public TDisplayValue DisplayValue { get; set; }
+        public byte[] Value { get; set; }
+
+        public object DisplayValue { get; set; }
 
         public int DisplayOrder { get; set; }
 
         public IDictionary<string, object> Properties { get; set; }
 
-        protected abstract TDisplayValue ToDisplayValue(ushort value);
+        protected abstract object ToDisplayValue(byte[] value);
 
-        protected abstract ushort ToValue(TDisplayValue displayValue);
+        protected abstract byte[] ToValue(object displayValue);
 
-        public virtual void LoadFromMemory()
-        {
-            this.Value = 1;
-            this.DisplayValue = this.ToDisplayValue(this.Value);
-        }
+        public abstract void LoadFromMemory(IMemoryManager memoryManager);
 
-        public virtual void SaveToMemory()
-        {
-            this.DisplayValue = default(TDisplayValue);
-            this.Value = this.ToValue(this.DisplayValue);
-        }
+        public abstract void SaveToMemory(IMemoryManager memoryManager);
     }
 }

@@ -87,9 +87,19 @@ namespace GameEngine.Memory
             get { return this.BaseAddress + this.AddressSpan * 11; }
         }
 
+        public int Quality
+        {
+            get { return this.BaseAddress + this.AddressSpan * 13; }
+        }
+
         public int LeftAndRight
         {
             get { return this.BaseAddress + this.AddressSpan * 15; }
+        }
+
+        public int Reputation
+        {
+            get { return this.BaseAddress + this.AddressSpan * 16; }
         }
 
         public int Intelligence

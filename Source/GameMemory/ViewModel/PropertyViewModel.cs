@@ -97,11 +97,17 @@ namespace GameEngine.ViewModel
             set;
         }
 
+        [Description("品德")]
+        public int Quality { get; set; }
+
         [Description("资质")]
         public int Intelligence { get; set; }
 
         [Description("左右")]
         public bool LeftAndRight { get; set; }
+
+        [Description("声望")]
+        public int Reputation { get; set; }
 
         internal PropertyViewModel(PropertyMemory propertyMemory, Win32ApiHelper win32Helper)
         {
@@ -130,6 +136,8 @@ namespace GameEngine.ViewModel
             this.Hidden = this._win32Helper.ReadProcessMemory(this._propertyMemory.Hidden);
             this.LeftAndRight = Convert.ToBoolean(this._win32Helper.ReadProcessMemory(this._propertyMemory.LeftAndRight));
             this.Intelligence = this._win32Helper.ReadProcessMemory(this._propertyMemory.Intelligence);
+            this.Quality = this._win32Helper.ReadProcessMemory(this._propertyMemory.Quality);
+            this.Reputation = this._win32Helper.ReadProcessMemory(this._propertyMemory.Reputation);
         }
 
         public override void SaveToMemory()
@@ -148,6 +156,8 @@ namespace GameEngine.ViewModel
             this._win32Helper.WriteProcessMemory(this._propertyMemory.Hidden, this.Hidden);
             this._win32Helper.WriteProcessMemory(this._propertyMemory.LeftAndRight, Convert.ToInt32(this.LeftAndRight));
             this._win32Helper.WriteProcessMemory(this._propertyMemory.Intelligence, this.Intelligence);
+            this._win32Helper.WriteProcessMemory(this._propertyMemory.Quality, this.Quality);
+            this._win32Helper.WriteProcessMemory(this._propertyMemory.Reputation, this.Reputation);
         }
     }
 }

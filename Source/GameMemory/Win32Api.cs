@@ -8,8 +8,8 @@ namespace GameEngine
 {
     public interface IMemoryManager
     {
-        bool ReadProcessMemory(int lpBaseAddress, byte[] lpBuffer, int size);
-        bool WriteProcessMemory(int lpBaseAddress, byte[] lpBuffer, int size);  
+        void ReadProcessMemory(int address, byte[] buffer, int size);
+        void WriteProcessMemory(int address, byte[] buffer, int size);  
     }
 
     internal class Win32Api
@@ -22,7 +22,7 @@ namespace GameEngine
             IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int size, out int numBytesWrite);  
     }
 
-    internal class Win32ApiHelper
+    public class Win32ApiHelper : IMemoryManager
     {
         private IntPtr _hProcess;
 
@@ -46,6 +46,18 @@ namespace GameEngine
         public void WriteProcessMemory(int address, int value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
+            int numBytesWrite;
+            Win32Api.WriteProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesWrite);
+        }
+
+        public void ReadProcessMemory(int address, byte[] buffer, int size)
+        {
+            int numBytesRead;
+            Win32Api.ReadProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesRead);
+        }
+
+        public void WriteProcessMemory(int address, byte[] buffer, int size)
+        {
             int numBytesWrite;
             Win32Api.WriteProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesWrite);
         }

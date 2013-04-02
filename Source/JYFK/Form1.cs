@@ -11,14 +11,14 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using GameEngine;
 using GameEngine.Memory;
-using GameEngine.ViewModel;
+using GameEngine.Module;
 
 namespace JYFK
 {
     public partial class Form1 : Form
     {
         private Process _gameProcess;
-        private GameViewModel _gameViewModel;
+        private PropertyModuleManager _propertyModuleManager;
 
         public Form1()
         {
@@ -33,37 +33,38 @@ namespace JYFK
                 return;
             }
 
-            var propertyViewModel = this._gameViewModel.Property;
-            var type = propertyViewModel.GetType();
-            foreach (var property in type.GetProperties())
+            foreach (var property in this._propertyModuleManager.GameMemories)
             {
-                if (property.GetCustomAttributes(typeof(DescriptionAttribute), false).Count() > 0)
+                if (property.DisplayType == typeof(bool))
                 {
-                    if (property.PropertyType == typeof(bool))
+                    bool value = ((CheckBox)this.panel_Property.Controls[string.Format("cb_Property{0}", property.MemoryAddress.ToString())]).Checked;
+                    property.DisplayValue = value;
+                }
+                else if (property.DisplayType == typeof(ushort))
+                {
+                    ushort value;
+                    if (
+                        !UInt16.TryParse(
+                            this.panel_Property.Controls[string.Format("tb_Property{0}", property.MemoryAddress.ToString())].Text,
+                            out value))
                     {
-                        bool value = ((CheckBox)this.panel_Property.Controls[string.Format("cb_Property{0}", property.Name)]).Checked;
-                        property.SetValue(propertyViewModel, value, null);
+                        value = 0;
                     }
-                    else
-                    {
-                        int value;
-                        if (
-                            !Int32.TryParse(
-                                this.panel_Property.Controls[string.Format("tb_Property{0}", property.Name)].Text,
-                                out value))
-                        {
-                            value = 0;
-                        }
 
-                        value = value > 255 ? 255 : value;
-
-                        property.SetValue(propertyViewModel, value, null);
-                    }
+                    property.DisplayValue = value;
                 }
             }
 
-            this._gameViewModel.SaveToMemory();
-            this.InitDisplayControls();
+            try
+            {
+                this._propertyModuleManager.SaveToMemory();
+                this.DrawPropertyPanel();
+                MessageBox.Show("修改成功");
+            }
+            catch
+            {
+                MessageBox.Show("修改失败");
+            }
         }
 
         private void btn_Load_Click(object sender, EventArgs e)
@@ -77,58 +78,86 @@ namespace JYFK
             if (this._gameProcess == null)
             {
                 this._gameProcess = this.GetGameProcess();
-                this._gameViewModel = new GameViewModel(this._gameProcess.Handle);
+                this._propertyModuleManager = new PropertyModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
             }
 
-            this.InitDisplayControls();
             this.btn_Save.Enabled = true;
+            this.btn_Save.Cursor = Cursors.Hand;
+
+            this.DrawPropertyPanel();
         }
 
-        private void InitDisplayControls()
+        private void DrawPropertyPanel()
         {
-            this._gameViewModel.LoadFromMemory();
-            this.InitPropertyPanel();
-        }
-
-        private void InitPropertyPanel()
-        {
-            this.panel_Property.Controls.Clear();
-            var propertyViewModel = this._gameViewModel.Property;
-            var type = propertyViewModel.GetType();
-            int index = 0;
-            foreach (var property in type.GetProperties())
+            try
             {
-                if (property.GetCustomAttributes(typeof(DescriptionAttribute), false).Count() > 0)
+                this._propertyModuleManager.LoadFromMemory();
+            }
+            catch
+            {
+                MessageBox.Show("读取成功");
+            }
+
+            int xIndex = 0;
+            int yIndex = 0;
+
+            foreach (var property in this._propertyModuleManager.GameMemories)
+            {
+                var label = this.panel_Property.Controls[string.Format("lb_Property{0}", property.MemoryAddress.ToString())] as Label;
+
+                if (label == null)
                 {
-                    var description = ((DescriptionAttribute)property.GetCustomAttributes(typeof(DescriptionAttribute), false)[0]).Description;
-                    var value = property.GetValue(propertyViewModel, null);
-                    var label = new Label();
-                    label.Name = string.Format("lb_Property{0}" , property.Name);
-                    label.Text = string.Format("{0}：", description);
-                    label.Top = index * 30;
-                    label.Width = 50;
-                    if (property.PropertyType == typeof(bool))
+                    label = new Label();
+                    label.Name = string.Format("lb_Property{0}", property.MemoryAddress.ToString());
+                    label.Text = string.Format("{0}：", property.Description);
+                    label.Left = xIndex * 180;
+                    label.Top = yIndex * 30;
+                    label.Width = 80;
+                    label.TextAlign = ContentAlignment.MiddleRight;
+                    this.panel_Property.Controls.Add(label);
+                }
+                
+                if (property.DisplayType == typeof(bool))
+                {
+                    var checkBox = this.panel_Property.Controls[string.Format("cb_Property{0}", property.MemoryAddress.ToString())] as CheckBox;
+
+                    if (checkBox == null)
                     {
-                        var checkBox = new CheckBox();
-                        checkBox.Name = string.Format("cb_Property{0}", property.Name);
-                        checkBox.Checked = (bool)value;
-                        checkBox.Left = 50;
-                        checkBox.Top = index * 30;
-                        this.panel_Property.Controls.Add(label);
+                        checkBox = new CheckBox();
+                        checkBox.Name = string.Format("cb_Property{0}", property.MemoryAddress.ToString());
+                        checkBox.Checked = BitConverter.ToBoolean(property.Value, 0);
+                        checkBox.Left = 80 + xIndex * 180;
+                        checkBox.Top = yIndex * 30;
+                        checkBox.Height = 23;
+                        checkBox.Cursor = Cursors.Hand;
                         this.panel_Property.Controls.Add(checkBox);
                     }
-                    else
+
+                    checkBox.Checked = (bool)property.DisplayValue;
+                }
+                else if (property.DisplayType == typeof(ushort))
+                {
+                    var textBox = this.panel_Property.Controls[string.Format("tb_Property{0}", property.MemoryAddress.ToString())] as TextBox;
+
+                    if (textBox == null)
                     {
-                        var textBox = new TextBox();
-                        textBox.Name = string.Format("tb_Property{0}", property.Name);
-                        textBox.Text = value.ToString();
-                        textBox.Left = 50;
-                        textBox.Top = index * 30;
-                        this.panel_Property.Controls.Add(label);
+                        textBox = new TextBox();
+                        textBox.Name = string.Format("tb_Property{0}", property.MemoryAddress.ToString());
+                        textBox.Left = 80 + xIndex * 180;
+                        textBox.Top = yIndex * 30;
+                        textBox.Height = 23;
                         this.panel_Property.Controls.Add(textBox);
                     }
 
-                    index++;
+                    textBox.Text = property.DisplayValue.ToString();
+                }
+
+                yIndex++;
+
+                if (yIndex * 30 >= this.panel_Property.Height)
+                {
+                    yIndex = 0;
+                    xIndex++;
                 }
             }
         }

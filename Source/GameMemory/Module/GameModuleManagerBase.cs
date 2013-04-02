@@ -8,19 +8,14 @@ namespace GameEngine.Module
 {
     public abstract class GameModuleManagerBase
     {
-        public IEnumerable<GameMemory> GameMemories { get; protected set; }
-
-        private IntPtr _hProcess;
-
         private IMemoryManager _memoryManager;
 
-        public GameModuleManagerBase(IntPtr hProcess, IMemoryManager memoryManager)
+        public GameModuleManagerBase(IMemoryManager memoryManager)
         {
-            this._hProcess = hProcess;
             this._memoryManager = memoryManager;
         }
 
-        protected abstract void InitGameMemories();
+        public abstract IEnumerable<GameMemoryBase> GameMemories { get; }
 
         protected abstract int BaseAddress { get; }
 
@@ -30,7 +25,7 @@ namespace GameEngine.Module
             {
                 foreach (var gameMemory in this.GameMemories)
                 {
-                    gameMemory.SaveToMemory(this._memoryManager);
+                    gameMemory.LoadFromMemory(this._memoryManager);
                 }
             }
         }

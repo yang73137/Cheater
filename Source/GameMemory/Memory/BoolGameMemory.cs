@@ -5,9 +5,9 @@ using System.Text;
 
 namespace GameEngine.Memory
 {
-    public class BoolGameMemory : GameMemory
+    public class BoolGameMemory : GameMemoryBase
     {
-        public BoolGameMemory(string description, int memoryAddress) : base(description, memoryAddress, typeof(bool))
+        public BoolGameMemory(string description, int memoryAddress) : base(description, memoryAddress, typeof(bool), 2)
         {
         }
 
@@ -18,17 +18,8 @@ namespace GameEngine.Memory
 
         protected override byte[] ToValue(object displayValue)
         {
-            return BitConverter.GetBytes((bool)displayValue);
-        }
-
-        public override void LoadFromMemory(IMemoryManager memoryManager)
-        {
-            memoryManager.ReadProcessMemory(this.MemoryAddress, this.Value, 2); 
-        }
-
-        public override void SaveToMemory(IMemoryManager memoryManager)
-        {
-            memoryManager.WriteProcessMemory(this.MemoryAddress, this.Value, 2); 
+            var value = displayValue as Nullable<bool>;
+            return BitConverter.GetBytes(value.HasValue ? value.Value : false);
         }
     }
 }

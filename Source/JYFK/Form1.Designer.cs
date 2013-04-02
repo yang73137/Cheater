@@ -36,7 +36,7 @@
             // btn_Save
             // 
             this.btn_Save.Enabled = false;
-            this.btn_Save.Location = new System.Drawing.Point(215, 26);
+            this.btn_Save.Location = new System.Drawing.Point(684, 12);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.Size = new System.Drawing.Size(75, 23);
             this.btn_Save.TabIndex = 0;
@@ -46,7 +46,8 @@
             // 
             // btn_Load
             // 
-            this.btn_Load.Location = new System.Drawing.Point(121, 26);
+            this.btn_Load.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Load.Location = new System.Drawing.Point(603, 12);
             this.btn_Load.Name = "btn_Load";
             this.btn_Load.Size = new System.Drawing.Size(75, 23);
             this.btn_Load.TabIndex = 1;
@@ -56,16 +57,17 @@
             // 
             // panel_Property
             // 
-            this.panel_Property.Location = new System.Drawing.Point(60, 88);
+            this.panel_Property.AutoScroll = true;
+            this.panel_Property.Location = new System.Drawing.Point(67, 51);
             this.panel_Property.Name = "panel_Property";
-            this.panel_Property.Size = new System.Drawing.Size(667, 597);
+            this.panel_Property.Size = new System.Drawing.Size(640, 480);
             this.panel_Property.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 744);
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.panel_Property);
             this.Controls.Add(this.btn_Load);
             this.Controls.Add(this.btn_Save);

@@ -20,11 +20,15 @@ namespace JYFK
 
         private SkillModuleManager _skillModuleManager;
 
+        private SkillLevelModuleManager _skillLevelModuleManager;
+
         private const string PropertyModuleManagerKey = "Property";
 
         private const string GoodsModuleManagerKey = "Goods";
 
         private const string SkillModuleManagerKey = "Skill";
+
+        private const string SkillLevelModuleManagerKey = "SkillLevel";
 
         public Form1()
         {
@@ -56,6 +60,7 @@ namespace JYFK
                 this._propertyModuleManager = new PropertyModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
                 this._goodsModuleManager = new GoodsModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
                 this._skillModuleManager = new SkillModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
+                this._skillLevelModuleManager = new SkillLevelModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
             }
 
             this.btn_Save.Enabled = true;
@@ -69,6 +74,7 @@ namespace JYFK
             this.LoadGameModule(this.panel_Property, this._propertyModuleManager, PropertyModuleManagerKey);
             this.LoadGameModule(this.panel_Goods, this._goodsModuleManager, GoodsModuleManagerKey);
             this.LoadGameModule(this.panel_Skill, this._skillModuleManager, SkillModuleManagerKey);
+            this.LoadGameModule(this.panel_SkillLevel, this._skillLevelModuleManager, SkillLevelModuleManagerKey);
         }
 
         private void LoadGameModule(Control container, GameModuleManagerBase gameModuleManager, string key)
@@ -163,6 +169,7 @@ namespace JYFK
             this.SaveGameModule(this.panel_Property, this._propertyModuleManager, PropertyModuleManagerKey);
             this.SaveGameModule(this.panel_Goods, this._goodsModuleManager, GoodsModuleManagerKey);
             this.SaveGameModule(this.panel_Skill, this._skillModuleManager, SkillModuleManagerKey);
+            this.SaveGameModule(this.panel_SkillLevel, this._skillLevelModuleManager, SkillLevelModuleManagerKey);
         }
 
         private void SaveGameModule(Control container, GameModuleManagerBase gameModuleManager, string key)
@@ -176,22 +183,28 @@ namespace JYFK
                 }
                 else if (property.DisplayType == typeof(ushort))
                 {
-                    ushort value;
+                    ushort value = 0;
 
                     if (property.Properties == null)
                     {
                         var textBox = container.Controls[string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString())] as TextBox;
-                        if (textBox == null || !UInt16.TryParse(textBox.Text, out value))
+                        if (textBox != null)
                         {
-                            value = 0;
+                            if (!UInt16.TryParse(textBox.Text, out value))
+                            {
+                                value = 0;
+                            }
                         }
                     }
                     else
                     {
                         var comboBox = container.Controls[string.Format("cbb_{0}{1}", key, property.MemoryAddress.ToString())] as ComboBox;
-                        if (comboBox == null || !UInt16.TryParse(comboBox.SelectedValue.ToString(), out value))
+                        if (comboBox != null)
                         {
-                            value = 0;
+                            if (!UInt16.TryParse(comboBox.SelectedValue.ToString(), out value))
+                            {
+                                value = 0;
+                            }
                         }
                     }
 
@@ -199,22 +212,28 @@ namespace JYFK
                 }
                 else if (property.DisplayType == typeof(byte))
                 {
-                    byte value;
+                    byte value = 0;
 
                     if (property.Properties == null)
                     {
                         var textBox = container.Controls[string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString())] as TextBox;
-                        if (textBox == null || !Byte.TryParse(textBox.Text, out value))
+                        if (textBox != null)
                         {
-                            value = 0;
+                            if (!!Byte.TryParse(textBox.Text, out value))
+                            {
+                                value = 0;
+                            }
                         }
                     }
                     else
                     {
                         var comboBox = container.Controls[string.Format("cbb_{0}{1}", key, property.MemoryAddress.ToString())] as ComboBox;
-                        if (comboBox == null || !Byte.TryParse(comboBox.SelectedValue.ToString(), out value))
+                        if (comboBox != null)
                         {
-                            value = 0;
+                            if (!Byte.TryParse(comboBox.SelectedValue.ToString(), out value))
+                            {
+                                value = 0;
+                            }
                         }
                     }
 

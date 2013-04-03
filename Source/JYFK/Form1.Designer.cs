@@ -37,6 +37,7 @@
             this.tab_Goods = new System.Windows.Forms.TabPage();
             this.tab_Skill = new System.Windows.Forms.TabPage();
             this.panel_Skill = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel_SkillLevel = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tab_Property.SuspendLayout();
             this.tab_Goods.SuspendLayout();
@@ -115,6 +116,7 @@
             // 
             // tab_Skill
             // 
+            this.tab_Skill.Controls.Add(this.panel_SkillLevel);
             this.tab_Skill.Controls.Add(this.panel_Skill);
             this.tab_Skill.Location = new System.Drawing.Point(4, 22);
             this.tab_Skill.Name = "tab_Skill";
@@ -128,8 +130,16 @@
             this.panel_Skill.AutoScroll = true;
             this.panel_Skill.Location = new System.Drawing.Point(24, 21);
             this.panel_Skill.Name = "panel_Skill";
-            this.panel_Skill.Size = new System.Drawing.Size(778, 522);
+            this.panel_Skill.Size = new System.Drawing.Size(778, 235);
             this.panel_Skill.TabIndex = 3;
+            // 
+            // panel_SkillLevel
+            // 
+            this.panel_SkillLevel.AutoScroll = true;
+            this.panel_SkillLevel.Location = new System.Drawing.Point(24, 302);
+            this.panel_SkillLevel.Name = "panel_SkillLevel";
+            this.panel_SkillLevel.Size = new System.Drawing.Size(778, 235);
+            this.panel_SkillLevel.TabIndex = 4;
             // 
             // Form1
             // 
@@ -160,6 +170,7 @@
         private System.Windows.Forms.TabPage tab_Skill;
         private System.Windows.Forms.FlowLayoutPanel panel_Skill;
         private System.Windows.Forms.FlowLayoutPanel panel_Property;
+        private System.Windows.Forms.FlowLayoutPanel panel_SkillLevel;
     }
 }
 

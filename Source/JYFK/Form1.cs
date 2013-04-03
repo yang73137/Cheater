@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
+
 using GameEngine;
-using GameEngine.Memory;
+
 using GameEngine.Module;
 
 namespace JYFK
@@ -18,7 +19,14 @@ namespace JYFK
     public partial class Form1 : Form
     {
         private Process _gameProcess;
+
         private PropertyModuleManager _propertyModuleManager;
+
+        private GoodsModuleManager _goodsModuleManager;
+
+        private const string PropertyModuleManagerKey = "Property";
+
+        private const string GoodsModuleManagerKey = "Goods";
 
         public Form1()
         {
@@ -33,38 +41,7 @@ namespace JYFK
                 return;
             }
 
-            foreach (var property in this._propertyModuleManager.GameMemories)
-            {
-                if (property.DisplayType == typeof(bool))
-                {
-                    bool value = ((CheckBox)this.panel_Property.Controls[string.Format("cb_Property{0}", property.MemoryAddress.ToString())]).Checked;
-                    property.DisplayValue = value;
-                }
-                else if (property.DisplayType == typeof(ushort))
-                {
-                    ushort value;
-                    if (
-                        !UInt16.TryParse(
-                            this.panel_Property.Controls[string.Format("tb_Property{0}", property.MemoryAddress.ToString())].Text,
-                            out value))
-                    {
-                        value = 0;
-                    }
-
-                    property.DisplayValue = value;
-                }
-            }
-
-            try
-            {
-                this._propertyModuleManager.SaveToMemory();
-                this.DrawPropertyPanel();
-                MessageBox.Show("修改成功");
-            }
-            catch
-            {
-                MessageBox.Show("修改失败");
-            }
+            this.SaveAllGameModules();
         }
 
         private void btn_Load_Click(object sender, EventArgs e)
@@ -79,87 +56,119 @@ namespace JYFK
             {
                 this._gameProcess = this.GetGameProcess();
                 this._propertyModuleManager = new PropertyModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
+                this._goodsModuleManager = new GoodsModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
             }
 
             this.btn_Save.Enabled = true;
             this.btn_Save.Cursor = Cursors.Hand;
 
-            this.DrawPropertyPanel();
+            this.LoadAllGameModules();
         }
 
-        private void DrawPropertyPanel()
+        private void LoadAllGameModules()
         {
-            try
-            {
-                this._propertyModuleManager.LoadFromMemory();
-            }
-            catch
-            {
-                MessageBox.Show("读取成功");
-            }
+            this.LoadGameModule(this.panel_Property, this._propertyModuleManager, PropertyModuleManagerKey);
+            this.LoadGameModule(this.panel_Goods, this._goodsModuleManager, GoodsModuleManagerKey);
+        }
 
-            int xIndex = 0;
-            int yIndex = 0;
+        private void LoadGameModule(Control container, GameModuleManagerBase gameModuleManager, string key)
+        {
+            gameModuleManager.LoadFromMemory();
 
-            foreach (var property in this._propertyModuleManager.GameMemories)
+            foreach (var property in gameModuleManager.GameMemories)
             {
-                var label = this.panel_Property.Controls[string.Format("lb_Property{0}", property.MemoryAddress.ToString())] as Label;
+                var lebelName = string.Format("lb_{0}{1}", key, property.MemoryAddress.ToString());
+                var label = container.Controls[lebelName] as Label;
 
                 if (label == null)
                 {
                     label = new Label();
-                    label.Name = string.Format("lb_Property{0}", property.MemoryAddress.ToString());
+                    label.Name = lebelName;
                     label.Text = string.Format("{0}：", property.Description);
-                    label.Left = xIndex * 180;
-                    label.Top = yIndex * 30;
                     label.Width = 80;
                     label.TextAlign = ContentAlignment.MiddleRight;
-                    this.panel_Property.Controls.Add(label);
+                    container.Controls.Add(label);
                 }
-                
+
                 if (property.DisplayType == typeof(bool))
                 {
-                    var checkBox = this.panel_Property.Controls[string.Format("cb_Property{0}", property.MemoryAddress.ToString())] as CheckBox;
+                    var checkBoxName = string.Format("cb_{0}{1}", key, property.MemoryAddress.ToString());
+                    var checkBox = container.Controls[checkBoxName] as CheckBox;
 
                     if (checkBox == null)
                     {
                         checkBox = new CheckBox();
-                        checkBox.Name = string.Format("cb_Property{0}", property.MemoryAddress.ToString());
-                        checkBox.Checked = BitConverter.ToBoolean(property.Value, 0);
-                        checkBox.Left = 80 + xIndex * 180;
-                        checkBox.Top = yIndex * 30;
+                        checkBox.Name = checkBoxName;
                         checkBox.Height = 23;
+                        checkBox.Width = 100;
                         checkBox.Cursor = Cursors.Hand;
-                        this.panel_Property.Controls.Add(checkBox);
+                        container.Controls.Add(checkBox);
                     }
 
                     checkBox.Checked = (bool)property.DisplayValue;
                 }
-                else if (property.DisplayType == typeof(ushort))
+                else if (property.DisplayType == typeof(ushort) || property.DisplayType == typeof(byte))
                 {
-                    var textBox = this.panel_Property.Controls[string.Format("tb_Property{0}", property.MemoryAddress.ToString())] as TextBox;
+                    var textBoxName = string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString());
+                    var textBox = container.Controls[textBoxName] as TextBox;
 
                     if (textBox == null)
                     {
                         textBox = new TextBox();
-                        textBox.Name = string.Format("tb_Property{0}", property.MemoryAddress.ToString());
-                        textBox.Left = 80 + xIndex * 180;
-                        textBox.Top = yIndex * 30;
+                        textBox.Name = textBoxName;
                         textBox.Height = 23;
-                        this.panel_Property.Controls.Add(textBox);
+                        container.Controls.Add(textBox);
                     }
 
                     textBox.Text = property.DisplayValue.ToString();
                 }
+            }
+        }
 
-                yIndex++;
+        private void SaveAllGameModules()
+        {
+            this.SaveGameModule(this.panel_Property, this._propertyModuleManager, PropertyModuleManagerKey);
+            this.SaveGameModule(this.panel_Goods, this._goodsModuleManager, GoodsModuleManagerKey);
+        }
 
-                if (yIndex * 30 >= this.panel_Property.Height)
+        private void SaveGameModule(Control container, GameModuleManagerBase gameModuleManager, string key)
+        {
+            foreach (var property in gameModuleManager.GameMemories)
+            {
+                if (property.DisplayType == typeof(bool))
                 {
-                    yIndex = 0;
-                    xIndex++;
+                    bool value = ((CheckBox)container.Controls[string.Format("cb_{0}{1}", key, property.MemoryAddress.ToString())]).Checked;
+                    property.DisplayValue = value;
+                }
+                else if (property.DisplayType == typeof(ushort))
+                {
+                    ushort value;
+                    if (
+                        !UInt16.TryParse(
+                            container.Controls[string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString())].Text,
+                            out value))
+                    {
+                        value = 0;
+                    }
+
+                    property.DisplayValue = value;
+                }
+                else if (property.DisplayType == typeof(byte))
+                {
+                    byte value;
+                    if (
+                        !Byte.TryParse(
+                            container.Controls[string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString())].Text,
+                            out value))
+                    {
+                        value = 0;
+                    }
+
+                    property.DisplayValue = value;
                 }
             }
+
+            gameModuleManager.SaveToMemory();
         }
 
         Process GetGameProcess()

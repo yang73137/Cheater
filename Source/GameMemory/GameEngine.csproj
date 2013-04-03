@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Memory\BoolGameMemory.cs" />
+    <Compile Include="Memory\ByteGameMemory.cs" />
     <Compile Include="Memory\GameMemoryBase.cs" />
     <Compile Include="Memory\UShortGameMemory.cs" />
+    <Compile Include="Module\GoodsModuleManager.cs" />
     <Compile Include="Module\PropertyModuleManager.cs" />
     <Compile Include="Module\GameModuleManagerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

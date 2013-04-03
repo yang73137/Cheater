@@ -26,6 +26,7 @@ namespace GameEngine.Module
                 {
                     this.InitGameMemories();
                 }
+
                 return this._gameMemories;
             }
         }

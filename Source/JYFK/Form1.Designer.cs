@@ -35,9 +35,12 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tab_Property = new System.Windows.Forms.TabPage();
             this.tab_Goods = new System.Windows.Forms.TabPage();
+            this.tab_Skill = new System.Windows.Forms.TabPage();
+            this.panel_Skill = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tab_Property.SuspendLayout();
             this.tab_Goods.SuspendLayout();
+            this.tab_Skill.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Save
@@ -82,11 +85,13 @@
             // 
             this.tabControl1.Controls.Add(this.tab_Property);
             this.tabControl1.Controls.Add(this.tab_Goods);
+            this.tabControl1.Controls.Add(this.tab_Skill);
             this.tabControl1.Location = new System.Drawing.Point(41, 58);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(834, 591);
             this.tabControl1.TabIndex = 4;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tab_Property
             // 
@@ -108,6 +113,24 @@
             this.tab_Goods.Text = "物品";
             this.tab_Goods.UseVisualStyleBackColor = true;
             // 
+            // tab_Skill
+            // 
+            this.tab_Skill.Controls.Add(this.panel_Skill);
+            this.tab_Skill.Location = new System.Drawing.Point(4, 22);
+            this.tab_Skill.Name = "tab_Skill";
+            this.tab_Skill.Size = new System.Drawing.Size(826, 565);
+            this.tab_Skill.TabIndex = 2;
+            this.tab_Skill.Text = "武功";
+            this.tab_Skill.UseVisualStyleBackColor = true;
+            // 
+            // panel_Skill
+            // 
+            this.panel_Skill.AutoScroll = true;
+            this.panel_Skill.Location = new System.Drawing.Point(24, 21);
+            this.panel_Skill.Name = "panel_Skill";
+            this.panel_Skill.Size = new System.Drawing.Size(778, 522);
+            this.panel_Skill.TabIndex = 3;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -121,6 +144,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tab_Property.ResumeLayout(false);
             this.tab_Goods.ResumeLayout(false);
+            this.tab_Skill.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -129,11 +153,13 @@
 
         private System.Windows.Forms.Button btn_Save;
         private System.Windows.Forms.Button btn_Load;
-        private System.Windows.Forms.Panel panel_Property;
         private System.Windows.Forms.FlowLayoutPanel panel_Goods;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tab_Property;
         private System.Windows.Forms.TabPage tab_Goods;
+        private System.Windows.Forms.TabPage tab_Skill;
+        private System.Windows.Forms.FlowLayoutPanel panel_Skill;
+        private System.Windows.Forms.FlowLayoutPanel panel_Property;
     }
 }
 

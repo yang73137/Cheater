@@ -24,7 +24,7 @@ namespace GameEngine.Memory
         {
             var value = displayValue as Nullable<ushort>;
 
-            return value.HasValue ? BitConverter.GetBytes(value.Value > this._maxValue ? this._maxValue : value.Value) : BitConverter.GetBytes(0);
+            return value.HasValue ? BitConverter.GetBytes(value.Value > this._maxValue ? this._maxValue : value.Value) : BitConverter.GetBytes((ushort)0);
         }
     }
 }

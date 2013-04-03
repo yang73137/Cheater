@@ -140,13 +140,14 @@ namespace JYFK
                         if (comboBox == null)
                         {
                             comboBox = new ComboBox();
-
                             comboBox.Name = comboBoxName;
+                            comboBox.Width = 100;
+
+                            container.Controls.Add(comboBox);   
+                            
                             comboBox.DataSource = dataSource;
                             comboBox.DisplayMember = "Key";
                             comboBox.ValueMember = "Value";
-                            comboBox.Width = 100;
-                            container.Controls.Add(comboBox);
                         }
 
                         if (property.DisplayType == typeof(ushort))
@@ -246,7 +247,7 @@ namespace JYFK
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.LoadAllGameModules();
+            ////this.LoadAllGameModules();
         }
         
         Process GetGameProcess()

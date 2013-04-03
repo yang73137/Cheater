@@ -54,6 +54,23 @@ namespace GameEngine.Module
 
                     new UShortGameMemory("武功10", this.BaseAddress + this._addressSpan * 9, 999),
                 };
+
+            //foreach (var gameMemory in this._gameMemories)
+            //{
+            //    gameMemory.Properties = new Dictionary<string, object>
+            //        {
+            //            { "等级1", (ushort)0 },
+            //            { "等级2", (ushort)1 },
+            //            { "等级3", (ushort)2 },
+            //            { "等级4", (ushort)3 },
+            //            { "等级5", (ushort)4 },
+            //            { "等级6", (ushort)5 },
+            //            { "等级7", (ushort)6 },
+            //            { "等级8", (ushort)7 },
+            //            { "等级9", (ushort)8 },
+            //            { "等级10", (ushort)9 }
+            //        };
+            //}
         }
 
         protected override int BaseAddress

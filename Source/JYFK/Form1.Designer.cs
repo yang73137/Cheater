@@ -47,7 +47,7 @@
             // btn_Save
             // 
             this.btn_Save.Enabled = false;
-            this.btn_Save.Location = new System.Drawing.Point(684, 12);
+            this.btn_Save.Location = new System.Drawing.Point(603, 29);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.Size = new System.Drawing.Size(75, 23);
             this.btn_Save.TabIndex = 0;
@@ -58,7 +58,7 @@
             // btn_Load
             // 
             this.btn_Load.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Load.Location = new System.Drawing.Point(603, 12);
+            this.btn_Load.Location = new System.Drawing.Point(522, 29);
             this.btn_Load.Name = "btn_Load";
             this.btn_Load.Size = new System.Drawing.Size(75, 23);
             this.btn_Load.TabIndex = 1;
@@ -71,7 +71,7 @@
             this.panel_Property.AutoScroll = true;
             this.panel_Property.Location = new System.Drawing.Point(21, 22);
             this.panel_Property.Name = "panel_Property";
-            this.panel_Property.Size = new System.Drawing.Size(778, 522);
+            this.panel_Property.Size = new System.Drawing.Size(600, 400);
             this.panel_Property.TabIndex = 2;
             // 
             // panel_Goods
@@ -79,7 +79,7 @@
             this.panel_Goods.AutoScroll = true;
             this.panel_Goods.Location = new System.Drawing.Point(21, 22);
             this.panel_Goods.Name = "panel_Goods";
-            this.panel_Goods.Size = new System.Drawing.Size(778, 522);
+            this.panel_Goods.Size = new System.Drawing.Size(600, 400);
             this.panel_Goods.TabIndex = 3;
             // 
             // tabControl1
@@ -87,10 +87,10 @@
             this.tabControl1.Controls.Add(this.tab_Property);
             this.tabControl1.Controls.Add(this.tab_Goods);
             this.tabControl1.Controls.Add(this.tab_Skill);
-            this.tabControl1.Location = new System.Drawing.Point(41, 58);
+            this.tabControl1.Location = new System.Drawing.Point(22, 58);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(834, 591);
+            this.tabControl1.Size = new System.Drawing.Size(660, 480);
             this.tabControl1.TabIndex = 4;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -99,7 +99,7 @@
             this.tab_Property.Controls.Add(this.panel_Property);
             this.tab_Property.Location = new System.Drawing.Point(4, 22);
             this.tab_Property.Name = "tab_Property";
-            this.tab_Property.Size = new System.Drawing.Size(826, 565);
+            this.tab_Property.Size = new System.Drawing.Size(652, 454);
             this.tab_Property.TabIndex = 0;
             this.tab_Property.Text = "基本属性";
             this.tab_Property.UseVisualStyleBackColor = true;
@@ -109,7 +109,7 @@
             this.tab_Goods.Controls.Add(this.panel_Goods);
             this.tab_Goods.Location = new System.Drawing.Point(4, 22);
             this.tab_Goods.Name = "tab_Goods";
-            this.tab_Goods.Size = new System.Drawing.Size(826, 565);
+            this.tab_Goods.Size = new System.Drawing.Size(652, 454);
             this.tab_Goods.TabIndex = 1;
             this.tab_Goods.Text = "物品";
             this.tab_Goods.UseVisualStyleBackColor = true;
@@ -120,7 +120,7 @@
             this.tab_Skill.Controls.Add(this.panel_Skill);
             this.tab_Skill.Location = new System.Drawing.Point(4, 22);
             this.tab_Skill.Name = "tab_Skill";
-            this.tab_Skill.Size = new System.Drawing.Size(826, 565);
+            this.tab_Skill.Size = new System.Drawing.Size(652, 454);
             this.tab_Skill.TabIndex = 2;
             this.tab_Skill.Text = "武功";
             this.tab_Skill.UseVisualStyleBackColor = true;
@@ -130,22 +130,22 @@
             this.panel_Skill.AutoScroll = true;
             this.panel_Skill.Location = new System.Drawing.Point(24, 21);
             this.panel_Skill.Name = "panel_Skill";
-            this.panel_Skill.Size = new System.Drawing.Size(778, 235);
+            this.panel_Skill.Size = new System.Drawing.Size(600, 160);
             this.panel_Skill.TabIndex = 3;
             // 
             // panel_SkillLevel
             // 
             this.panel_SkillLevel.AutoScroll = true;
-            this.panel_SkillLevel.Location = new System.Drawing.Point(24, 302);
+            this.panel_SkillLevel.Location = new System.Drawing.Point(24, 201);
             this.panel_SkillLevel.Name = "panel_SkillLevel";
-            this.panel_SkillLevel.Size = new System.Drawing.Size(778, 235);
+            this.panel_SkillLevel.Size = new System.Drawing.Size(600, 160);
             this.panel_SkillLevel.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(921, 679);
+            this.ClientSize = new System.Drawing.Size(706, 554);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btn_Load);
             this.Controls.Add(this.btn_Save);

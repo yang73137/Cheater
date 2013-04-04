@@ -25,15 +25,15 @@ namespace JYFK.ViewModel
         {
             return new List<GameMemoryBase>
                 {
-                    new UShortGameMemory("队友1", this.baseAddress + this.addressSpan * 0, 99),
+                    new UShortGameMemory("队友1", this.baseAddress + this.addressSpan * 0, 65535),
 
-                    new UShortGameMemory("队友2", this.baseAddress + this.addressSpan * 1, 99),
+                    new UShortGameMemory("队友2", this.baseAddress + this.addressSpan * 1, 65535),
 
-                    new UShortGameMemory("队友3", this.baseAddress + this.addressSpan * 2, 99),
+                    new UShortGameMemory("队友3", this.baseAddress + this.addressSpan * 2, 65535),
 
-                    new UShortGameMemory("队友4", this.baseAddress + this.addressSpan * 3, 99),
+                    new UShortGameMemory("队友4", this.baseAddress + this.addressSpan * 3, 65535),
 
-                    new UShortGameMemory("队友5", this.baseAddress + this.addressSpan * 4, 99),
+                    new UShortGameMemory("队友5", this.baseAddress + this.addressSpan * 4, 65535),
                 };
         }
 

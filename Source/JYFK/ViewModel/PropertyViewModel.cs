@@ -65,6 +65,8 @@ namespace JYFK.ViewModel
                         
                     new UShortGameMemory("暗器", this.baseAddress + this.addressSpan * 39, 100),
 
+                    new UShortGameMemory("品德", this.baseAddress + this.addressSpan * 41, 100),
+
                     new BoolGameMemory("左右", this.baseAddress + this.addressSpan * 43), 
 
                     new UShortGameMemory("声望", this.baseAddress + this.addressSpan * 44, 255), 

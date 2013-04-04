@@ -17,6 +17,8 @@ namespace JYFK.ViewModel
 
         private int baseAddress = 0x1D4032A;
 
+        private IDictionary<string, object> teammates;
+
         private ControlManager controlManager = ControlManager.Current;
 
         protected override IEnumerable<GameEngine.Memory.GameMemoryBase> GetGameMemories()
@@ -44,7 +46,7 @@ namespace JYFK.ViewModel
 
                 var comboBoxName = string.Format("{0}_ccb_{1}", this.container.Name, gameMemory.MemoryAddress.ToString());
 
-                var dataSource = this.GetAllSkills();
+                var dataSource = this.GetAllTeammates();
                 var selectedItem = dataSource.FirstOrDefault(p => (ushort)p.Value == (ushort)gameMemory.DisplayValue);
 
                 controlManager.CreateComboBox(container, comboBoxName, dataSource, "Key", "Value", selectedItem);
@@ -60,8 +62,13 @@ namespace JYFK.ViewModel
             }
         }
 
-        private IDictionary<string, object> GetAllSkills()
+        private IDictionary<string, object> GetAllTeammates()
         {
+            if (this.teammates != null)
+            {
+                return this.teammates;
+            }
+
             ushort i = 1;
             IDictionary<string, object> dictionary = new Dictionary<string, object>
                     {
@@ -134,7 +141,8 @@ namespace JYFK.ViewModel
                         { "王语嫣", i++ },
                     };
 
-            return dictionary;
+            this.teammates = dictionary;
+            return this.teammates;
         }
     }
 }

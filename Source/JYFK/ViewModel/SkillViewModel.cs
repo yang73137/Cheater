@@ -17,6 +17,8 @@ namespace JYFK.ViewModel
 
         private int baseAddress = 0x1D403E6;
 
+        private IDictionary<string, object> skills;
+
         private ControlManager controlManager = ControlManager.Current;
 
         protected override IEnumerable<GameEngine.Memory.GameMemoryBase> GetGameMemories()
@@ -72,6 +74,11 @@ namespace JYFK.ViewModel
 
         private IDictionary<string, object> GetAllSkills()
         {
+            if (this.skills != null)
+            {
+                return this.skills;
+            }
+
             ushort i = 0;
             IDictionary<string, object> dictionary = new Dictionary<string, object>
                     {
@@ -179,8 +186,8 @@ namespace JYFK.ViewModel
                         { "狮子吼", i++ },
                         { "九阳神功", i++ },
                     };
-
-            return dictionary;
+            this.skills = dictionary;
+            return this.skills;
         }
     }
 }

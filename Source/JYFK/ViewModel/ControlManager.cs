@@ -74,6 +74,7 @@ namespace JYFK.ViewModel
                 comboBox = new ComboBox();
                 comboBox.Name = controlName;
                 comboBox.Width = 100;
+                comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
                 container.Controls.Add(comboBox);
 

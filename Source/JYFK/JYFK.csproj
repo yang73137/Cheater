@@ -60,6 +60,7 @@
     <Compile Include="ViewModel\PropertyViewModel.cs" />
     <Compile Include="ViewModel\SkillLevelViewModel.cs" />
     <Compile Include="ViewModel\SkillViewModel.cs" />
+    <Compile Include="ViewModel\TeammateViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

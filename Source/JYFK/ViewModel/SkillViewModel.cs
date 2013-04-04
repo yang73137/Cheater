@@ -55,7 +55,7 @@ namespace JYFK.ViewModel
                 var comboBoxName = string.Format("{0}_ccb_{1}", this.container.Name, gameMemory.MemoryAddress.ToString());
 
                 var dataSource = this.GetAllSkills();
-                var selectedItem = dataSource.First(p => (ushort)p.Value == (ushort)gameMemory.DisplayValue);
+                var selectedItem = dataSource.FirstOrDefault(p => (ushort)p.Value == (ushort)gameMemory.DisplayValue);
 
                 controlManager.CreateComboBox(container, comboBoxName, dataSource, "Key", "Value", selectedItem);
             }

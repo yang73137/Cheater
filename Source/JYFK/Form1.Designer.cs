@@ -38,10 +38,13 @@
             this.tab_Skill = new System.Windows.Forms.TabPage();
             this.panel_SkillLevel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_Skill = new System.Windows.Forms.FlowLayoutPanel();
+            this.tab_Teammate = new System.Windows.Forms.TabPage();
+            this.panel_Teammate = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tab_Property.SuspendLayout();
             this.tab_Goods.SuspendLayout();
             this.tab_Skill.SuspendLayout();
+            this.tab_Teammate.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Save
@@ -87,6 +90,7 @@
             this.tabControl1.Controls.Add(this.tab_Property);
             this.tabControl1.Controls.Add(this.tab_Goods);
             this.tabControl1.Controls.Add(this.tab_Skill);
+            this.tabControl1.Controls.Add(this.tab_Teammate);
             this.tabControl1.Location = new System.Drawing.Point(22, 58);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -140,6 +144,24 @@
             this.panel_Skill.Size = new System.Drawing.Size(600, 160);
             this.panel_Skill.TabIndex = 3;
             // 
+            // tab_Teammate
+            // 
+            this.tab_Teammate.Controls.Add(this.panel_Teammate);
+            this.tab_Teammate.Location = new System.Drawing.Point(4, 22);
+            this.tab_Teammate.Name = "tab_Teammate";
+            this.tab_Teammate.Size = new System.Drawing.Size(652, 454);
+            this.tab_Teammate.TabIndex = 3;
+            this.tab_Teammate.Text = "队友";
+            this.tab_Teammate.UseVisualStyleBackColor = true;
+            // 
+            // panel_Teammate
+            // 
+            this.panel_Teammate.AutoScroll = true;
+            this.panel_Teammate.Location = new System.Drawing.Point(24, 21);
+            this.panel_Teammate.Name = "panel_Teammate";
+            this.panel_Teammate.Size = new System.Drawing.Size(600, 160);
+            this.panel_Teammate.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -154,6 +176,7 @@
             this.tab_Property.ResumeLayout(false);
             this.tab_Goods.ResumeLayout(false);
             this.tab_Skill.ResumeLayout(false);
+            this.tab_Teammate.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -170,6 +193,8 @@
         private System.Windows.Forms.FlowLayoutPanel panel_Skill;
         private System.Windows.Forms.FlowLayoutPanel panel_Property;
         private System.Windows.Forms.FlowLayoutPanel panel_SkillLevel;
+        private System.Windows.Forms.TabPage tab_Teammate;
+        private System.Windows.Forms.FlowLayoutPanel panel_Teammate;
     }
 }
 

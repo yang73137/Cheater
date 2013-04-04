@@ -55,6 +55,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ControlManager.cs" />
+    <Compile Include="ViewModel\GoodsViewModel.cs" />
+    <Compile Include="ViewModel\PropertyViewModel.cs" />
+    <Compile Include="ViewModel\SkillLevelViewModel.cs" />
+    <Compile Include="ViewModel\SkillViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

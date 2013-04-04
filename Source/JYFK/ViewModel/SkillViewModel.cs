@@ -2,62 +2,78 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using GameEngine;
 using GameEngine.Memory;
+using System.Drawing;
 
-namespace GameEngine.Module
+namespace JYFK.ViewModel
 {
-    public class SkillModuleManager : GameModuleManagerBase
+    public class SkillViewModel : ViewModelBase
     {
-        private int _addressSpan = 2;
+        public SkillViewModel(Control container, IMemoryManager memoryManager) : base(container, memoryManager) { }
 
-        private IEnumerable<GameMemoryBase> _gameMemories;
+        private int addressSpan = 2;
 
-        public SkillModuleManager(IMemoryManager memoryManager) : base(memoryManager)
+        private int baseAddress = 0x1D403E6;
+
+        private ControlManager controlManager = ControlManager.Current;
+
+        protected override IEnumerable<GameEngine.Memory.GameMemoryBase> GetGameMemories()
         {
+            return new List<GameMemoryBase>
+                {
+                    new UShortGameMemory("武功1", this.baseAddress + this.addressSpan * 0, 99),
+
+                    new UShortGameMemory("武功2", this.baseAddress + this.addressSpan * 1, 99),
+
+                    new UShortGameMemory("武功3", this.baseAddress + this.addressSpan * 2, 99),
+
+                    new UShortGameMemory("武功4", this.baseAddress + this.addressSpan * 3, 99),
+
+                    new UShortGameMemory("武功5", this.baseAddress + this.addressSpan * 4, 99),
+
+                    new UShortGameMemory("武功6", this.baseAddress + this.addressSpan * 5, 99),
+
+                    new UShortGameMemory("武功7", this.baseAddress + this.addressSpan * 6, 99),
+
+                    new UShortGameMemory("武功8", this.baseAddress + this.addressSpan * 7, 99),
+
+                    new UShortGameMemory("武功9", this.baseAddress + this.addressSpan * 8, 99),
+
+                    new UShortGameMemory("武功10", this.baseAddress + this.addressSpan * 9, 99),
+                };
         }
 
-        public override IEnumerable<GameMemoryBase> GameMemories
+        protected override void LoadViewModel(Control container, IEnumerable<GameMemoryBase> gameMemories)
         {
-            get
+            foreach (var gameMemory in gameMemories)
             {
-                if (this._gameMemories == null)
-                {
-                    this.InitGameMemories();
-                }
+                var labelName = string.Format("{0}_lb_{1}", this.container.Name, gameMemory.MemoryAddress.ToString());
+                controlManager.CreateLabel(container, labelName, gameMemory.Description);
 
-                return this._gameMemories;
+                var comboBoxName = string.Format("{0}_ccb_{1}", this.container.Name, gameMemory.MemoryAddress.ToString());
+
+                var dataSource = this.GetAllSkills();
+                var selectedItem = dataSource.First(p => (ushort)p.Value == (ushort)gameMemory.DisplayValue);
+
+                controlManager.CreateComboBox(container, comboBoxName, dataSource, "Key", "Value", selectedItem);
             }
         }
 
-        protected void InitGameMemories()
+        protected override void SaveViewModel(Control container, IEnumerable<GameMemoryBase> gameMemories)
         {
-            this._gameMemories = new List<GameMemoryBase>
-                {
-                    new UShortGameMemory("武功1", this.BaseAddress + this._addressSpan * 0, 99),
-
-                    new UShortGameMemory("武功2", this.BaseAddress + this._addressSpan * 1, 99),
-
-                    new UShortGameMemory("武功3", this.BaseAddress + this._addressSpan * 2, 99),
-
-                    new UShortGameMemory("武功4", this.BaseAddress + this._addressSpan * 3, 99),
-
-                    new UShortGameMemory("武功5", this.BaseAddress + this._addressSpan * 4, 99),
-
-                    new UShortGameMemory("武功6", this.BaseAddress + this._addressSpan * 5, 99),
-
-                    new UShortGameMemory("武功7", this.BaseAddress + this._addressSpan * 6, 99),
-
-                    new UShortGameMemory("武功8", this.BaseAddress + this._addressSpan * 7, 99),
-
-                    new UShortGameMemory("武功9", this.BaseAddress + this._addressSpan * 8, 99),
-
-                    new UShortGameMemory("武功10", this.BaseAddress + this._addressSpan * 9, 99),
-                };
-
-            foreach (var gameMemory in this._gameMemories)
+            foreach (var gameMemory in gameMemories)
             {
-                ushort i = 0;
-                gameMemory.Properties = new Dictionary<string, object>
+                var comboBoxName = string.Format("{0}_ccb_{1}", this.container.Name, gameMemory.MemoryAddress.ToString());
+                gameMemory.DisplayValue = (ushort)controlManager.GetValueFromComboBox(container, comboBoxName);
+            }
+        }
+
+        private IDictionary<string, object> GetAllSkills()
+        {
+            ushort i = 0;
+            IDictionary<string, object> dictionary = new Dictionary<string, object>
                     {
                         { "无", i++ },
                         { "野球拳", i++ },
@@ -163,15 +179,8 @@ namespace GameEngine.Module
                         { "狮子吼", i++ },
                         { "九阳神功", i++ },
                     };
-            }
-        }
 
-        protected override int BaseAddress
-        {
-            get
-            {
-                return 0x1D403E6;
-            }
+            return dictionary;
         }
     }
 }

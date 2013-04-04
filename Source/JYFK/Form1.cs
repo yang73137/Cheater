@@ -3,32 +3,18 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 using GameEngine;
-
-using GameEngine.Module;
+using JYFK.ViewModel;
 
 namespace JYFK
 {
     public partial class Form1 : Form
     {
-        private Process _gameProcess;
+        private Process gameProcess;
 
-        private PropertyModuleManager _propertyModuleManager;
-
-        private GoodsModuleManager _goodsModuleManager;
-
-        private SkillModuleManager _skillModuleManager;
-
-        private SkillLevelModuleManager _skillLevelModuleManager;
-
-        private const string PropertyModuleManagerKey = "Property";
-
-        private const string GoodsModuleManagerKey = "Goods";
-
-        private const string SkillModuleManagerKey = "Skill";
-
-        private const string SkillLevelModuleManagerKey = "SkillLevel";
+        private IEnumerable<ViewModelBase> viewModels;
 
         public Form1()
         {
@@ -43,7 +29,7 @@ namespace JYFK
                 return;
             }
 
-            this.SaveAllGameModules();
+            this.SaveViewModels();
         }
 
         private void btn_Load_Click(object sender, EventArgs e)
@@ -54,200 +40,45 @@ namespace JYFK
                 return;
             }
 
-            if (this._gameProcess == null)
-            {
-                this._gameProcess = this.GetGameProcess();
-                this._propertyModuleManager = new PropertyModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
-                this._goodsModuleManager = new GoodsModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
-                this._skillModuleManager = new SkillModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
-                this._skillLevelModuleManager = new SkillLevelModuleManager(new Win32ApiHelper(this._gameProcess.Handle));
-            }
+            this.InitViewModels();
 
             this.btn_Save.Enabled = true;
             this.btn_Save.Cursor = Cursors.Hand;
-
-            this.LoadAllGameModules();
         }
 
-        private void LoadAllGameModules()
+        private void InitViewModels()
         {
-            this.LoadGameModule(this.panel_Property, this._propertyModuleManager, PropertyModuleManagerKey);
-            this.LoadGameModule(this.panel_Goods, this._goodsModuleManager, GoodsModuleManagerKey);
-            this.LoadGameModule(this.panel_Skill, this._skillModuleManager, SkillModuleManagerKey);
-            this.LoadGameModule(this.panel_SkillLevel, this._skillLevelModuleManager, SkillLevelModuleManagerKey);
-        }
-
-        private void LoadGameModule(Control container, GameModuleManagerBase gameModuleManager, string key)
-        {
-            gameModuleManager.LoadFromMemory();
-
-            foreach (var property in gameModuleManager.GameMemories)
+            if (this.gameProcess == null)
             {
-                var lebelName = string.Format("lb_{0}{1}", key, property.MemoryAddress.ToString());
-                var label = container.Controls[lebelName] as Label;
+                this.gameProcess = this.GetGameProcess();
+                IMemoryManager memoryManager = new Win32ApiHelper(this.gameProcess.Handle);
 
-                if (label == null)
-                {
-                    label = new Label();
-                    label.Name = lebelName;
-                    label.Text = string.Format("{0}：", property.Description);
-                    label.Width = 80;
-                    label.TextAlign = ContentAlignment.MiddleRight;
-                    container.Controls.Add(label);
-                }
+                this.viewModels = new ViewModelBase[] {
+                    new PropertyViewModel(this.panel_Property, memoryManager),
+                    new SkillViewModel(this.panel_Skill, memoryManager),
+                    new SkillLevelViewModel(this.panel_SkillLevel, memoryManager),
+                };
+            }
 
-                if (property.DisplayType == typeof(bool))
-                {
-                    var checkBoxName = string.Format("cb_{0}{1}", key, property.MemoryAddress.ToString());
-                    var checkBox = container.Controls[checkBoxName] as CheckBox;
+            this.LoadViewModels();
+        }
 
-                    if (checkBox == null)
-                    {
-                        checkBox = new CheckBox();
-                        checkBox.Name = checkBoxName;
-                        checkBox.Height = 23;
-                        checkBox.Width = 100;
-                        checkBox.Cursor = Cursors.Hand;
-                        container.Controls.Add(checkBox);
-                    }
-
-                    checkBox.Checked = (bool)property.DisplayValue;
-                }
-                else if (property.DisplayType == typeof(ushort) || property.DisplayType == typeof(byte))
-                {
-                    if (property.Properties == null)
-                    {
-                        var textBoxName = string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString());
-                        var textBox = container.Controls[textBoxName] as TextBox;
-
-                        if (textBox == null)
-                        {
-                            textBox = new TextBox();
-                            textBox.Name = textBoxName;
-                            textBox.Height = 23;
-                            container.Controls.Add(textBox);
-                        }
-
-                        textBox.Text = property.DisplayValue.ToString();
-                    }
-                    else
-                    {
-                        var comboBoxName = string.Format("cbb_{0}{1}", key, property.MemoryAddress.ToString());
-
-                        var comboBox = container.Controls[comboBoxName] as ComboBox;
-                        var dataSource = property.Properties.ToList();
-
-                        if (comboBox == null)
-                        {
-                            comboBox = new ComboBox();
-                            comboBox.Name = comboBoxName;
-                            comboBox.Width = 100;
-
-                            container.Controls.Add(comboBox);   
-                            
-                            comboBox.DataSource = dataSource;
-                            comboBox.DisplayMember = "Key";
-                            comboBox.ValueMember = "Value";
-                        }
-
-                        if (property.DisplayType == typeof(ushort))
-                        {
-                            comboBox.SelectedItem =
-                                dataSource.First(p => (ushort)p.Value == (ushort)property.DisplayValue);
-                        }
-                        else if (property.DisplayType == typeof(byte))
-                        {
-                            comboBox.SelectedItem =
-                                dataSource.First(p => (byte)p.Value == (byte)property.DisplayValue);
-                        }
-                    }
-                }
+        private void LoadViewModels()
+        {
+            foreach (var viewModel in this.viewModels)
+            {
+                viewModel.Load();
             }
         }
 
-        private void SaveAllGameModules()
+        private void SaveViewModels()
         {
-            this.SaveGameModule(this.panel_Property, this._propertyModuleManager, PropertyModuleManagerKey);
-            this.SaveGameModule(this.panel_Goods, this._goodsModuleManager, GoodsModuleManagerKey);
-            this.SaveGameModule(this.panel_Skill, this._skillModuleManager, SkillModuleManagerKey);
-            this.SaveGameModule(this.panel_SkillLevel, this._skillLevelModuleManager, SkillLevelModuleManagerKey);
-        }
-
-        private void SaveGameModule(Control container, GameModuleManagerBase gameModuleManager, string key)
-        {
-            foreach (var property in gameModuleManager.GameMemories)
+            foreach (var viewModel in this.viewModels)
             {
-                if (property.DisplayType == typeof(bool))
-                {
-                    var checkBox = container.Controls[string.Format("cb_{0}{1}", key, property.MemoryAddress.ToString())] as CheckBox;
-                    property.DisplayValue = checkBox == null ? false : checkBox.Checked;
-                }
-                else if (property.DisplayType == typeof(ushort))
-                {
-                    ushort value = 0;
-
-                    if (property.Properties == null)
-                    {
-                        var textBox = container.Controls[string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString())] as TextBox;
-                        if (textBox != null)
-                        {
-                            if (!UInt16.TryParse(textBox.Text, out value))
-                            {
-                                value = 0;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var comboBox = container.Controls[string.Format("cbb_{0}{1}", key, property.MemoryAddress.ToString())] as ComboBox;
-                        if (comboBox != null)
-                        {
-                            if (!UInt16.TryParse(comboBox.SelectedValue.ToString(), out value))
-                            {
-                                value = 0;
-                            }
-                        }
-                    }
-
-                    property.DisplayValue = value;
-                }
-                else if (property.DisplayType == typeof(byte))
-                {
-                    byte value = 0;
-
-                    if (property.Properties == null)
-                    {
-                        var textBox = container.Controls[string.Format("tb_{0}{1}", key, property.MemoryAddress.ToString())] as TextBox;
-                        if (textBox != null)
-                        {
-                            if (!!Byte.TryParse(textBox.Text, out value))
-                            {
-                                value = 0;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var comboBox = container.Controls[string.Format("cbb_{0}{1}", key, property.MemoryAddress.ToString())] as ComboBox;
-                        if (comboBox != null)
-                        {
-                            if (!Byte.TryParse(comboBox.SelectedValue.ToString(), out value))
-                            {
-                                value = 0;
-                            }
-                        }
-                    }
-
-                    property.DisplayValue = value;
-                }
+                viewModel.Save();
             }
 
-            gameModuleManager.SaveToMemory();
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ////this.LoadAllGameModules();
+            this.LoadViewModels();
         }
         
         Process GetGameProcess()

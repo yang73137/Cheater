@@ -44,11 +44,6 @@
     <Compile Include="Memory\ByteGameMemory.cs" />
     <Compile Include="Memory\GameMemoryBase.cs" />
     <Compile Include="Memory\UShortGameMemory.cs" />
-    <Compile Include="Module\GoodsModuleManager.cs" />
-    <Compile Include="Module\PropertyModuleManager.cs" />
-    <Compile Include="Module\GameModuleManagerBase.cs" />
-    <Compile Include="Module\SkillLevelModuleManager.cs" />
-    <Compile Include="Module\SkillModuleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Api.cs" />
   </ItemGroup>

@@ -36,8 +36,8 @@
             this.tab_Property = new System.Windows.Forms.TabPage();
             this.tab_Goods = new System.Windows.Forms.TabPage();
             this.tab_Skill = new System.Windows.Forms.TabPage();
-            this.panel_Skill = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_SkillLevel = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel_Skill = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tab_Property.SuspendLayout();
             this.tab_Goods.SuspendLayout();
@@ -92,7 +92,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(660, 480);
             this.tabControl1.TabIndex = 4;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tab_Property
             // 
@@ -125,14 +124,6 @@
             this.tab_Skill.Text = "武功";
             this.tab_Skill.UseVisualStyleBackColor = true;
             // 
-            // panel_Skill
-            // 
-            this.panel_Skill.AutoScroll = true;
-            this.panel_Skill.Location = new System.Drawing.Point(24, 21);
-            this.panel_Skill.Name = "panel_Skill";
-            this.panel_Skill.Size = new System.Drawing.Size(600, 160);
-            this.panel_Skill.TabIndex = 3;
-            // 
             // panel_SkillLevel
             // 
             this.panel_SkillLevel.AutoScroll = true;
@@ -140,6 +131,14 @@
             this.panel_SkillLevel.Name = "panel_SkillLevel";
             this.panel_SkillLevel.Size = new System.Drawing.Size(600, 160);
             this.panel_SkillLevel.TabIndex = 4;
+            // 
+            // panel_Skill
+            // 
+            this.panel_Skill.AutoScroll = true;
+            this.panel_Skill.Location = new System.Drawing.Point(24, 21);
+            this.panel_Skill.Name = "panel_Skill";
+            this.panel_Skill.Size = new System.Drawing.Size(600, 160);
+            this.panel_Skill.TabIndex = 3;
             // 
             // Form1
             // 

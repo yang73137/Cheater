@@ -43,6 +43,7 @@
     <Compile Include="Memory\BoolGameMemory.cs" />
     <Compile Include="Memory\ByteGameMemory.cs" />
     <Compile Include="Memory\GameMemoryBase.cs" />
+    <Compile Include="Memory\TupleUShortGameMemory.cs" />
     <Compile Include="Memory\UShortGameMemory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Api.cs" />

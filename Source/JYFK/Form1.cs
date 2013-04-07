@@ -57,7 +57,8 @@ namespace JYFK
                     new PropertyViewModel(this.panel_Property, memoryManager),
                     new SkillViewModel(this.panel_Skill, memoryManager),
                     new SkillLevelViewModel(this.panel_SkillLevel, memoryManager),
-                    new TeammateViewModel(this.panel_Teammate, memoryManager)
+                    new TeammateViewModel(this.panel_Teammate, memoryManager),
+                    new GoodsViewModel(this.panel_Goods, memoryManager)
                 };
             }
 

@@ -35,31 +35,16 @@ namespace GameEngine
             this._hProcess = hProcess;
         }
 
-        public int ReadProcessMemory(int address)
-        {
-            byte[] buffer = new byte[4];
-            int numBytesRead;
-            Win32Api.ReadProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesRead);
-            return BitConverter.ToInt32(buffer, 0);
-        }
-
-        public void WriteProcessMemory(int address, int value)
-        {
-            byte[] buffer = BitConverter.GetBytes(value);
-            int numBytesWrite;
-            Win32Api.WriteProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesWrite);
-        }
-
-        public void ReadProcessMemory(int address, byte[] buffer, int size)
+        public void ReadProcessMemory(int address, byte[] buffer, int size = 2)
         {
             int numBytesRead;
-            Win32Api.ReadProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesRead);
+            Win32Api.ReadProcessMemory(this._hProcess, new IntPtr(address), buffer, size, out numBytesRead);
         }
 
-        public void WriteProcessMemory(int address, byte[] buffer, int size)
+        public void WriteProcessMemory(int address, byte[] buffer, int size = 2)
         {
             int numBytesWrite;
-            Win32Api.WriteProcessMemory(this._hProcess, new IntPtr(address), buffer, 2, out numBytesWrite);
+            Win32Api.WriteProcessMemory(this._hProcess, new IntPtr(address), buffer, size, out numBytesWrite);
         }
     }
 }

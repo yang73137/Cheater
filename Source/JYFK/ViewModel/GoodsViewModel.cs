@@ -56,18 +56,6 @@ namespace JYFK.ViewModel
             return gameMemories;
         }
 
-        protected override void LoadGameMemories(IEnumerable<GameMemoryBase> gameMemories)
-        {
-            gameMemories = this.GetGameMemories();
-            base.LoadGameMemories(gameMemories);
-            this.decotateGameMemories = this.DecorateGameMemories(gameMemories);
-        }
-
-        protected override void SaveGameMemories(IEnumerable<GameMemoryBase> gameMemories)
-        {
-            base.SaveGameMemories(this.decotateGameMemories);
-        }
-
         protected override void LoadViewModel(Control container, IEnumerable<GameMemoryBase> gameMemories)
         {
             this.container.Controls.Clear();
@@ -104,6 +92,8 @@ namespace JYFK.ViewModel
         {
             var list = new List<GameMemoryBase>(gameMemories);
             var index = 0;
+
+            var dd = goodsDictionary.Select(p => p.Value).Except(gameMemories.Select(p => p.Description));
 
             foreach (var noGoods in goodsDictionary.Select(p => p.Value).Except(gameMemories.Select(p => p.Description)))
             {

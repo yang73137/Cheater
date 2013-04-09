@@ -27,22 +27,22 @@ namespace JYFK.ViewModel
             this.memoryManager = memoryManager;
         }
 
-        protected virtual void LoadGameMemories(IEnumerable<GameMemoryBase> gameMemories)
+        private void LoadGameMemories()
         {
-            if (gameMemories != null)
+            if (this.GameMemories != null)
             {
-                foreach (var gameMemory in gameMemories)
+                foreach (var gameMemory in this.GameMemories)
                 {
                     gameMemory.LoadFromMemory(this.memoryManager);
                 }
             }
         }
 
-        protected virtual void SaveGameMemories(IEnumerable<GameMemoryBase> gameMemories)
+        private void SaveGameMemories()
         {
-            if (gameMemories != null)
+            if (this.GameMemories != null)
             {
-                foreach (var gameMemory in gameMemories)
+                foreach (var gameMemory in this.GameMemories)
                 {
                     gameMemory.SaveToMemory(this.memoryManager);
                 }
@@ -65,14 +65,14 @@ namespace JYFK.ViewModel
 
         public void Load()
         {
-            this.LoadGameMemories(this.GameMemories);
+            this.LoadGameMemories();
             this.LoadViewModel(this.container, this.GameMemories);
         }
 
         public void Save()
         {
             this.SaveViewModel(this.container, this.GameMemories);
-            this.SaveGameMemories(this.GameMemories);
+            this.SaveGameMemories();
         }
     }
 }

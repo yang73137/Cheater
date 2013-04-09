@@ -6,16 +6,19 @@ using System.Windows.Forms;
 using GameEngine;
 using GameEngine.Memory;
 using System.Drawing;
+using System.Configuration;
 
 namespace JYFK.ViewModel
 {
+    using System.Globalization;
+
     public class TeammateViewModel : ViewModelBase
     {
         public TeammateViewModel(Control container, IMemoryManager memoryManager) : base(container, memoryManager) { }
 
         private int addressSpan = 2;
 
-        private int baseAddress = 0x1D4032A;
+        private int baseAddress = Int32.Parse(ConfigurationManager.AppSettings["TeammateBaseAddress"], NumberStyles.AllowHexSpecifier);
 
         private IDictionary<string, object> teammates;
 

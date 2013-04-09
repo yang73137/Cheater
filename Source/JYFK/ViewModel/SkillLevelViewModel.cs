@@ -6,16 +6,19 @@ using System.Windows.Forms;
 using GameEngine;
 using GameEngine.Memory;
 using System.Drawing;
+using System.Configuration;
 
 namespace JYFK.ViewModel
 {
+    using System.Globalization;
+
     public class SkillLevelViewModel : ViewModelBase
     {
         public SkillLevelViewModel(Control container, IMemoryManager memoryManager) : base(container, memoryManager) { }
 
         private int addressSpan = 2;
 
-        private int baseAddress = 0x1D403FA;
+        private int baseAddress = Int32.Parse(ConfigurationManager.AppSettings["SkillLevelBaseAddress"], NumberStyles.AllowHexSpecifier);
 
         private ControlManager controlManager = ControlManager.Current;
 

@@ -18,7 +18,7 @@ namespace JYFK.ViewModel
 
         public ViewModelBase(Control container, IMemoryManager memoryManager)
         {
-            if (container == null)
+            if (container == null || memoryManager == null)
             {
                 throw new ArgumentNullException();
             }

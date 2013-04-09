@@ -6,16 +6,19 @@ using System.Windows.Forms;
 using GameEngine;
 using GameEngine.Memory;
 using System.Drawing;
+using System.Configuration;
 
 namespace JYFK.ViewModel
 {
+    using System.Globalization;
+
     public class SkillViewModel : ViewModelBase
     {
         public SkillViewModel(Control container, IMemoryManager memoryManager) : base(container, memoryManager) { }
 
         private int addressSpan = 2;
 
-        private int baseAddress = 0x1D403E6;
+        private int baseAddress = Int32.Parse(ConfigurationManager.AppSettings["SkillBaseAddress"], NumberStyles.AllowHexSpecifier);
 
         private IDictionary<string, object> skills;
 

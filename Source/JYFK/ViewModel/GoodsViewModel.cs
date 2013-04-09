@@ -6,18 +6,19 @@ using System.Windows.Forms;
 using GameEngine;
 using GameEngine.Memory;
 using System.Drawing;
+using System.Configuration;
 
 namespace JYFK.ViewModel
 {
+    using System.Globalization;
+
     public class GoodsViewModel : ViewModelBase
     {
         public GoodsViewModel(Control container, IMemoryManager memoryManager) : base(container, memoryManager) { }
 
         private int addressSpan = 4;
 
-        private int baseAddress = 0x6018078;
-
-        private int maxBaseAddress = 0x6018398;
+        private int baseAddress = Int32.Parse(ConfigurationManager.AppSettings["GoodsBaseAddress"], NumberStyles.AllowHexSpecifier);
 
         private ControlManager controlManager = ControlManager.Current;
 
@@ -33,7 +34,7 @@ namespace JYFK.ViewModel
             var goodsDictionary = this.GetGoodsDictionary();
             this.emptyAddress = new List<int>();
 
-            var bytes = this.maxBaseAddress - this.baseAddress + 2 ;
+            var bytes = this.goodsDictionary.Count * 4;
             byte[] value = new byte[bytes];
             this.memoryManager.ReadProcessMemory(this.baseAddress, value, bytes);
 

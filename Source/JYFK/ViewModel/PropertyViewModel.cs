@@ -6,16 +6,19 @@ using System.Windows.Forms;
 using GameEngine;
 using GameEngine.Memory;
 using System.Drawing;
+using System.Configuration;
 
 namespace JYFK.ViewModel
 {
+    using System.Globalization;
+
     public class PropertyViewModel : ViewModelBase
     {
         public PropertyViewModel(Control container, IMemoryManager memoryManager) : base(container, memoryManager) { }
 
         private int addressSpan = 2;
 
-        private int baseAddress = 0x1D40386;
+        private int baseAddress = Int32.Parse(ConfigurationManager.AppSettings["PorpertyBaseAddress"], NumberStyles.AllowHexSpecifier);
 
         private ControlManager controlManager = ControlManager.Current;
 
